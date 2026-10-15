@@ -351,6 +351,53 @@ body{padding-bottom:80px}.toast{bottom:90px}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
+
+/* Warm backgrounds stay behind content; product photography has its own space. */
+body{background:#FFFDF9}
+.welcome{background:radial-gradient(ellipse at 88% 22%,#F0DFCA 0,transparent 53%),radial-gradient(ellipse at 8% 100%,#F3EAE0 0,transparent 60%),#FBF7EF}
+#categorias{background:linear-gradient(180deg,#FFFDF9,#FAF7F1)}
+#cotizador{background:radial-gradient(ellipse at 0 0,#EEEFE3 0,transparent 52%),#F5F5EE}
+.band{background:#F7F4ED}
+#sedes,#preguntas{background:#FFFDF9}
+.hero-product{position:relative;margin:0;transform:rotate(3deg);padding:14px 14px 0;background:white;border-radius:8px;box-shadow:0 18px 55px #72563C20}
+.hero-product img{width:100%;height:auto;aspect-ratio:3/2;object-fit:cover;border-radius:3px}
+.hero-product figcaption{padding:16px 4px;font-size:.73rem;text-align:center;color:#676151}
+.hero-label{position:absolute;right:-12px;top:-27px;padding:23px 18px;background:var(--yellow);border-radius:50%;font-size:.85rem;font-weight:700;line-height:1.3;transform:rotate(8deg)}
+.product-visual{height:auto;aspect-ratio:3/2;overflow:hidden}
+.product-visual img{width:100%;height:100%;object-fit:cover;transition:transform .25s}
+a.cat-card:hover .product-visual img{transform:scale(1.035)}
+.cat-card{background:#fff;border-color:#E5DFD3}
+.image-note{font-size:.75rem;line-height:1.6;color:#6A655D;margin:20px 0 0}
+.inspiration{padding-top:56px;background:#F1EBDF}
+.inspiration-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:26px}
+.inspiration-heading .section-head{margin:0}
+.carousel-controls{display:flex;align-items:center;gap:14px;flex-shrink:0}
+.carousel-controls button{border:1px solid #CAC2B5;background:#FFFDF9;border-radius:50%;width:46px;height:46px;font-size:1.25rem;color:var(--ink)}
+.carousel-controls button:hover:enabled{background:#fff;border-color:var(--red)}
+.carousel-controls button:disabled{opacity:.35;cursor:default}
+#inspiration-status{font-size:.8rem;min-width:40px;text-align:center}
+.inspiration-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;border-radius:20px;scrollbar-width:thin;scrollbar-color:#C3B8A5 transparent}
+.inspiration-slide{flex:0 0 100%;min-width:0;display:grid;grid-template-columns:1.1fr 1fr;align-items:stretch;scroll-snap-align:start;scroll-snap-stop:always;background:white}
+.inspiration-slide>img{width:100%;height:100%;min-height:330px;object-fit:cover}
+.inspiration-copy{padding:44px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center}
+.inspiration-copy h3{font-size:clamp(1.7rem,3vw,2.5rem);line-height:1.15;margin:12px 0 16px}
+.inspiration-copy>p:not(.kicker){font-size:.95rem;line-height:1.8;color:var(--ink-soft);margin:0 0 24px}
+.design-photo{width:100%;height:100%;min-height:300px;object-fit:cover}
+.cat-card:focus-visible,.inspiration-track:focus-visible{outline:3px solid var(--red);outline-offset:5px}
+@media(max-width:1100px){.inspiration-copy{padding:28px}}
+@media(max-width:700px){
+.welcome-grid{gap:36px}.hero-product{max-width:440px;margin:8px 8px 0;transform:rotate(2deg)}
+.hero-product figcaption{font-size:.69rem;padding:12px 0}.hero-label{padding:18px 13px;font-size:.75rem;right:-8px;top:-20px}
+.product-visual{height:auto}.inspiration{padding-top:40px}
+.inspiration-heading{align-items:flex-start;flex-direction:column;gap:18px}
+.inspiration-slide{grid-template-columns:1fr;grid-template-rows:auto 1fr}
+.inspiration-slide>img{min-height:0;height:auto;aspect-ratio:3/2}
+.inspiration-copy{padding:24px}.inspiration-copy h3{font-size:1.8rem}
+.inspiration-copy>p:not(.kicker){font-size:.9rem}.inspiration-copy .slide-btn{width:100%;padding:14px}
+.design-photo{min-height:0;height:auto;aspect-ratio:3/2}
+}
+@media(prefers-reduced-motion:reduce){.product-visual img{transition:none}}
+
 </style>
 </head>
 <body>
@@ -384,7 +431,11 @@ body{padding-bottom:80px}.toast{bottom:90px}
  <p class="welcome-copy">Fotos, photobooks, cuadros y regalos. Encuentra lo que buscas, prepara tu pedido y coordina con tu sede por WhatsApp.</p>
  <div class="welcome-actions"><a class="slide-btn" href="#categorias">Explorar productos ↗</a><a class="secondary-btn" href="#cotizador">Cotizar mis fotos</a></div>
  <p class="welcome-note">3 sedes en Lima · Cotiza sin pagar en línea</p></div>
- <div class="memory-art" aria-hidden="true"><div class="memory-paper paper-back"><div class="memory-landscape landscape-blue"></div><span>Un viaje para recordar</span></div><div class="memory-paper paper-front"><div class="memory-landscape"></div><span>Los momentos de siempre.</span></div><span class="memory-sticker">Dales un lugar<br>en tu vida.</span></div></div>
+ <figure class="hero-product">
+   <img src="assets/productos/fotos.webp" srcset="assets/productos/fotos-480.webp 480w, assets/productos/fotos.webp 960w" sizes="(max-width:700px) 100vw, 45vw" width="960" height="640" alt="Impresiones fotográficas con bordes blancos y recuerdos de viajes y familia" fetchpriority="high" decoding="async">
+   <figcaption>Un recuerdo en pantalla. Mil formas de disfrutarlo.</figcaption>
+   <span class="hero-label">Hecho para<br>recordar.</span>
+ </figure></div>
 </section>
 
   <!-- ============ CATEGORÍAS ============ -->
@@ -401,10 +452,39 @@ body{padding-bottom:80px}.toast{bottom:90px}
  <div class="cat-grid" id="cat-grid">
         <!-- generado por JS a partir de CATEGORIAS -->
       </div>
+      <p class="image-note">Imágenes referenciales de los productos. Consulta acabados y opciones con tu sede.</p>
     </div>
   </section>
 
   <div class="filmstrip bottom"></div>
+
+  <section class="inspiration" id="inspiracion" aria-labelledby="inspiration-title">
+    <div class="wrap">
+      <div class="inspiration-heading">
+        <div class="section-head"><p class="kicker">IDEAS PARA TUS RECUERDOS</p><h2 id="inspiration-title">Dales una nueva forma.</h2><p>Recorre algunas ideas y elige la que va contigo.</p></div>
+        <div class="carousel-controls"><button type="button" id="inspiration-prev" aria-label="Ver idea anterior" aria-controls="inspiration-track">←</button><span id="inspiration-status" role="status">1 de 4</span><button type="button" id="inspiration-next" aria-label="Ver siguiente idea" aria-controls="inspiration-track">→</button></div>
+      </div>
+      <div class="inspiration-track" id="inspiration-track" role="region" aria-roledescription="carrusel" aria-label="Ideas de productos" tabindex="0">
+        <article class="inspiration-slide" role="group" aria-roledescription="diapositiva" aria-label="1 de 4">
+          <img src="assets/productos/fotos.webp" srcset="assets/productos/fotos-480.webp 480w, assets/productos/fotos.webp 960w" sizes="(max-width:700px) 100vw, 50vw" width="960" height="640" alt="" loading="lazy" decoding="async">
+          <div class="inspiration-copy"><p class="kicker">01 · FOTOS</p><h3>Lo cotidiano también merece imprimirse.</h3><p>Ese viaje, una tarde en familia o una foto que siempre te hace sonreír. Elige el tamaño y prepara tu cotización.</p><a class="slide-btn" href="#cotizador" data-servicio="Impresión fotográfica">Cotizar fotos →</a></div>
+        </article>
+        <article class="inspiration-slide" role="group" aria-roledescription="diapositiva" aria-label="2 de 4">
+          <img src="assets/productos/photobooks.webp" srcset="assets/productos/photobooks-480.webp 480w, assets/productos/photobooks.webp 960w" sizes="(max-width:700px) 100vw, 50vw" width="960" height="640" alt="" loading="lazy" decoding="async">
+          <div class="inspiration-copy"><p class="kicker">02 · PHOTOBOOKS</p><h3>Una historia que puedes volver a abrir.</h3><p>Reúne tus fotos en un fotolibro y coordina el diseño con nuestro equipo.</p><a class="slide-btn" href="#cotizador" data-servicio="Fotolibro">Cotizar un photobook →</a></div>
+        </article>
+        <article class="inspiration-slide" role="group" aria-roledescription="diapositiva" aria-label="3 de 4">
+          <img src="assets/productos/galeria.webp" srcset="assets/productos/galeria-480.webp 480w, assets/productos/galeria.webp 960w" sizes="(max-width:700px) 100vw, 50vw" width="960" height="640" alt="" loading="lazy" decoding="async">
+          <div class="inspiration-copy"><p class="kicker">03 · CUADROS</p><h3>Tus recuerdos, a la vista todos los días.</h3><p>Dale un lugar a tu foto favorita o combina varias en una galería. Consulta las opciones con tu sede.</p><a class="slide-btn" href="#cotizador" data-servicio="Galería de cuadros">Cotizar mi galería →</a></div>
+        </article>
+        <article class="inspiration-slide" role="group" aria-roledescription="diapositiva" aria-label="4 de 4">
+          <img src="assets/productos/gifts.webp" srcset="assets/productos/gifts-480.webp 480w, assets/productos/gifts.webp 960w" sizes="(max-width:700px) 100vw, 50vw" width="960" height="640" alt="" loading="lazy" decoding="async">
+          <div class="inspiration-copy"><p class="kicker">04 · REGALOS</p><h3>Un detalle que se siente personal.</h3><p>Explora ideas para regalar con tus fotos y consulta las opciones de personalización disponibles.</p><a class="slide-btn" href="#cotizador" data-servicio="Gifts">Consultar regalos →</a></div>
+        </article>
+      </div>
+      <p class="image-note">Imágenes referenciales · Desliza o usa las flechas para explorar.</p>
+    </div>
+  </section>
 
   <!-- ============ COTIZADOR ============ -->
   <section id="cotizador">
@@ -595,7 +675,7 @@ body{padding-bottom:80px}.toast{bottom:90px}
           <p>Menos tiempo diseñando, más tiempo viviendo. Nosotros nos encargamos de armar tu galería, cuadro o photobook como se merece.</p>
           <a href="https://wa.me/51968229804?text=Hola%2C%20quisiera%20recibir%20asesor%C3%ADa%20para%20dise%C3%B1ar%20mi%20pedido.%20%C2%BFMe%20ayudan%3F" target="_blank" rel="noopener" class="slide-btn" style="align-self:flex-start;">Diseña con un experto</a>
         </div>
-        <div class="ph" style="--ph-grad: linear-gradient(135deg, var(--blue), var(--yellow));"><span class="ph-tag">Imagen referencial</span></div>
+        <img class="design-photo" src="assets/productos/photobooks.webp" srcset="assets/productos/photobooks-480.webp 480w, assets/productos/photobooks.webp 960w" sizes="(max-width:980px) 100vw, 50vw" width="960" height="640" alt="Fotolibro abierto con una composición de fotografías de viajes" loading="lazy" decoding="async">
       </div>
     </div>
   </section>
@@ -740,15 +820,15 @@ body{padding-bottom:80px}.toast{bottom:90px}
   "use strict";
 
   const CATEGORIAS = [
-    { nombre:"Fotos", servicio:"Impresión fotográfica", descripcion:"Imprime tus favoritas en cinco tamaños.", palabras:"impresion fotografica fotos", simbolo:"▧", color:"#EDF0E6" },
-    { nombre:"Photobooks", servicio:"Fotolibro", descripcion:"Tus historias reunidas en un fotolibro.", palabras:"album libro fotolibro photobook", simbolo:"▤", color:"#F4E8DE" },
-    { nombre:"Cuadros", servicio:"Cuadro", descripcion:"Dale un lugar especial a tu foto favorita.", palabras:"cuadros pared marco", simbolo:"▣", color:"#E6EEF0" },
-    { nombre:"Galería de cuadros", servicio:"Galería de cuadros", descripcion:"Combina recuerdos para crear tu galería.", palabras:"galeria cuadros pared", simbolo:"▦", color:"#EFEADC" },
-    { nombre:"Calendarios", servicio:"Calendario", descripcion:"Acompaña cada mes con tus mejores fotos.", palabras:"calendario almanaque", simbolo:"▦", color:"#E8ECDD" },
-    { nombre:"Tarjetas", servicio:"Tarjetas", descripcion:"Un detalle personal para cada ocasión.", palabras:"tarjetas invitaciones", simbolo:"▱", color:"#F5E5DF" },
-    { nombre:"Gifts", servicio:"Gifts", descripcion:"Encuentra un regalo con un toque personal.", palabras:"regalos gifts personalizados", simbolo:"◇", color:"#E8EBF4" },
-    { nombre:"Accesorios", servicio:"Accesorios", descripcion:"Complementos para tus fotos y recuerdos.", palabras:"accesorios complementos", simbolo:"⊞", color:"#F1ECD9" },
-    { nombre:"Revelado digital", servicio:"Revelado digital", descripcion:"Consulta el revelado de tu rollo a USB.", palabras:"revelado rollo usb analogico", simbolo:"▥", color:"#E4EBE8" }
+    { nombre:"Fotos", servicio:"Impresión fotográfica", descripcion:"Imprime tus favoritas en cinco tamaños.", palabras:"impresion fotografica fotos", imagen:"fotos", color:"#EDF0E6" },
+    { nombre:"Photobooks", servicio:"Fotolibro", descripcion:"Tus historias reunidas en un fotolibro.", palabras:"album libro fotolibro photobook", imagen:"photobooks", color:"#F4E8DE" },
+    { nombre:"Cuadros", servicio:"Cuadro", descripcion:"Dale un lugar especial a tu foto favorita.", palabras:"cuadros pared marco", imagen:"cuadros", color:"#E6EEF0" },
+    { nombre:"Galería de cuadros", servicio:"Galería de cuadros", descripcion:"Combina recuerdos para crear tu galería.", palabras:"galeria cuadros pared", imagen:"galeria", color:"#EFEADC" },
+    { nombre:"Calendarios", servicio:"Calendario", descripcion:"Acompaña cada mes con tus mejores fotos.", palabras:"calendario almanaque", imagen:"calendarios", color:"#E8ECDD" },
+    { nombre:"Tarjetas", servicio:"Tarjetas", descripcion:"Un detalle personal para cada ocasión.", palabras:"tarjetas invitaciones", imagen:"tarjetas", color:"#F5E5DF" },
+    { nombre:"Gifts", servicio:"Gifts", descripcion:"Encuentra un regalo con un toque personal.", palabras:"regalos gifts personalizados", imagen:"gifts", color:"#E8EBF4" },
+    { nombre:"Accesorios", servicio:"Accesorios", descripcion:"Complementos para tus fotos y recuerdos.", palabras:"accesorios complementos", imagen:"accesorios", color:"#F1ECD9" },
+    { nombre:"Revelado digital", servicio:"Revelado digital", descripcion:"Consulta el revelado de tu rollo a USB.", palabras:"revelado rollo usb analogico", imagen:"revelado", color:"#E4EBE8" }
   ];
   const catGrid = document.querySelector("#cat-grid");
   const buscador = document.querySelector("#product-search");
@@ -758,7 +838,7 @@ body{padding-bottom:80px}.toast{bottom:90px}
     const productos = CATEGORIAS.filter(c => normalizar(c.nombre + " " + c.palabras).includes(consulta));
     catGrid.innerHTML = productos.map(c => `
       <a href="#cotizador" class="cat-card" data-servicio="${c.servicio}">
-        <div class="product-visual" style="--tile:${c.color}" aria-hidden="true"><span class="product-symbol">${c.simbolo}</span></div>
+        <div class="product-visual" style="--tile:${c.color}"><img src="assets/productos/${c.imagen}.webp" srcset="assets/productos/${c.imagen}-480.webp 480w, assets/productos/${c.imagen}.webp 960w" sizes="(max-width:700px) 46vw, 32vw" width="960" height="640" alt="" loading="lazy" decoding="async"></div>
         <div class="cat-info"><h3>${c.nombre}</h3><p class="product-description">${c.descripcion}</p><span class="product-action">Cotizar ${c.nombre.toLowerCase()} →</span></div>
       </a>`).join("");
     if (!productos.length) catGrid.innerHTML = '<p class="empty-search">No encontramos ese producto. Prueba otra palabra o <a href="#sedes">consulta con una sede</a>.</p>';
@@ -1086,6 +1166,51 @@ body{padding-bottom:80px}.toast{bottom:90px}
 
     document.querySelector(".ticket").scrollIntoView({ behavior: "smooth", block: "start" });
   }
+
+
+  // Manual carousel: native swipe and keyboard navigation, with no automatic motion.
+  const track = document.querySelector("#inspiration-track");
+  const previousIdea = document.querySelector("#inspiration-prev");
+  const nextIdea = document.querySelector("#inspiration-next");
+  const slides = Array.from(track.children);
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  function updateCarousel() {
+    const index = Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
+    previousIdea.disabled = index === 0;
+    nextIdea.disabled = index === slides.length - 1;
+    document.querySelector("#inspiration-status").textContent = (index + 1) + " de " + slides.length;
+    slides.forEach((slide, i) => { slide.inert = i !== index; });
+  }
+  function moveIdea(direction) {
+    const index = Math.round(track.scrollLeft / track.clientWidth);
+    const target = Math.max(0, Math.min(slides.length - 1, index + direction));
+    track.scrollTo({left: target * track.clientWidth, behavior: reducedMotion.matches ? "instant" : "smooth"});
+  }
+  previousIdea.addEventListener("click", () => moveIdea(-1));
+  nextIdea.addEventListener("click", () => moveIdea(1));
+  track.addEventListener("scroll", updateCarousel, {passive:true});
+  track.addEventListener("keydown", event => {
+    if (event.target !== track || !["ArrowLeft","ArrowRight","Home","End"].includes(event.key)) return;
+    event.preventDefault();
+    if (event.key === "Home" || event.key === "End") {
+      track.scrollTo({left:event.key === "Home" ? 0 : (slides.length - 1) * track.clientWidth, behavior:"instant"});
+    } else moveIdea(event.key === "ArrowRight" ? 1 : -1);
+  });
+  let carouselWidth = track.clientWidth;
+  new ResizeObserver(() => {
+    const currentIndex = Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / carouselWidth)));
+    carouselWidth = track.clientWidth;
+    track.scrollTo({left:currentIndex * carouselWidth, behavior:"instant"});
+    updateCarousel();
+  }).observe(track);
+  updateCarousel();
+  document.querySelector("#inspiracion").addEventListener("click", event => {
+    const link = event.target.closest("a[data-servicio]");
+    if (!link) return;
+    campoServicio.value = link.dataset.servicio;
+    campoServicio.dispatchEvent(new Event("change", {bubbles:true}));
+    campoServicio.focus({preventScroll:true});
+  });
 
   /* ============ FAQ acordeón ============ */
   document.querySelectorAll(".faq-item").forEach(item => {
