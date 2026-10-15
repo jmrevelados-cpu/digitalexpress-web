@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="assistant/ui.css">
 <title>Digital Express Perú — Cotiza tu impresión fotográfica</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,500;0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1235,6 +1236,44 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
 
 })();
 </script>
+<button id="assistant-launcher" class="assistant-launcher" type="button" aria-haspopup="dialog" aria-controls="assistant-panel" aria-expanded="false" hidden>¿Te ayudamos?</button>
+<dialog id="assistant-panel" class="assistant-panel" aria-labelledby="assistant-title">
+  <div class="assistant-shell">
+    <header class="assistant-header">
+      <div><h2 id="assistant-title">Tu asistente de DIGITAL EXPRESS</h2><p>Orientación automática · <button id="assistant-human-always" class="assistant-header-human" type="button">Hablar con una persona</button></p></div>
+      <button id="assistant-close" type="button" aria-label="Cerrar asistente">×</button>
+    </header>
+    <div class="assistant-scroll">
+      <div id="assistant-log" class="assistant-log" role="log" aria-label="Conversación con el asistente" aria-live="polite" aria-relevant="additions"></div>
+      <div id="assistant-shortcuts" class="assistant-shortcuts" aria-label="Consultas frecuentes">
+        <button type="button" data-question="Quiero cotizar fotos">Cotizar fotos</button>
+        <button type="button" data-question="¿Qué medidas de fotos tienen?">Medidas de fotos</button>
+        <button type="button" data-question="Quiero orientación sobre marcos">Marcos</button>
+        <button type="button" data-question="¿Cómo preparo mis archivos?">Preparar archivos</button>
+      </div>
+      <div class="assistant-support">
+        <label for="assistant-branch">Tu sede</label>
+        <select id="assistant-branch"><option value="">Elige una sede</option></select>
+        <button id="assistant-human" class="assistant-human" type="button">Hablar con un asesor humano</button>
+        <section id="assistant-handoff" class="assistant-handoff" aria-labelledby="assistant-handoff-title" hidden>
+          <h3 id="assistant-handoff-title">Tu consulta para el asesor</h3>
+          <p id="assistant-preview" class="assistant-preview"></p>
+          <a id="assistant-whatsapp" class="assistant-whatsapp" target="_blank" rel="noopener" hidden>Abrir WhatsApp</a>
+        </section>
+      </div>
+    </div>
+    <div class="assistant-compose">
+      <form id="assistant-form" class="assistant-form">
+        <label for="assistant-message">Escribe tu consulta</label>
+        <input id="assistant-message" type="text" placeholder="Ej. Quiero 20 fotos de 10 x 15 cm" maxlength="600" autocomplete="off" required>
+        <button id="assistant-send" type="submit">Enviar</button>
+      </form>
+      <p id="assistant-status" class="assistant-status" role="status">Atención automática. Puedes hablar con una persona.</p>
+      <div class="assistant-footer"><p id="assistant-privacy">El resumen se comparte con tu sede solo cuando tú abres WhatsApp y lo envías.</p><button id="assistant-reset" class="assistant-reset" type="button">Reiniciar</button></div>
+    </div>
+  </div>
+</dialog>
+<script type="module" src="assistant/ui.js"></script>
 </body>
 </html>
   
