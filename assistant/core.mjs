@@ -11,8 +11,8 @@ function validDate(value) {
 export function tariffIsCurrent(tariff, now = new Date()) {
   const day = peruDate(now);
   return tariff?.approved === true && !!tariff.version && !!tariff.approvedBy && !!tariff.source &&
-    validDate(tariff.validFrom) && validDate(tariff.validUntil) &&
-    tariff.validFrom <= day && tariff.validUntil >= day && Array.isArray(tariff.rows);
+    validDate(tariff.validFrom) && (tariff.validUntil===null || validDate(tariff.validUntil)) &&
+    tariff.validFrom <= day && (tariff.validUntil===null || tariff.validUntil >= day) && Array.isArray(tariff.rows);
 }
 function productFrom(text) {
   if (/marco|enmarc|cuadro/.test(text)) return "marcos";
@@ -52,7 +52,7 @@ export function getQuote(request, knowledge, now = new Date()) {
   if (!request.product || !request.size) return {status:"size"};
   if (!Number.isSafeInteger(request.quantity) || request.quantity < 1 || request.quantity > 10000) return {status:"quantity"};
   const options = knowledge.tariff.rows.filter(row =>
-    row.product === request.product && normalize(row.size) === normalize(request.size) &&
+    row.product === request.product && canonicalSize(row.size) === canonicalSize(request.size) &&
     (row.branch === "Todas" || row.branch === request.branch) &&
     Number.isSafeInteger(row.minQuantity) && row.minQuantity >= 1 &&
     (row.maxQuantity === null || (Number.isSafeInteger(row.maxQuantity) && row.maxQuantity >= row.minQuantity)) &&
@@ -60,11 +60,16 @@ export function getQuote(request, knowledge, now = new Date()) {
   );
   const matches = options.filter(row => !request.finish || normalize(row.finish) === normalize(request.finish));
   if (!matches.length) return {status:"custom"};
-  if (matches.length > 1) return {status:request.finish?"ambiguous":"finish"};
+  if (matches.length > 1) return {status:new Set(matches.map(row=>normalize(row.finish))).size>1 && !request.finish?"finish":"ambiguous"};
   const row = matches[0];
   if (!Number.isSafeInteger(row.unitPriceCents) || row.unitPriceCents <= 0 ||
     !Number.isSafeInteger(row.unitPriceCents * request.quantity)) return {status:"invalid"};
   return {status:"ok", unitPriceCents:row.unitPriceCents,totalCents:row.unitPriceCents*request.quantity,finish:row.finish,version:knowledge.tariff.version};
+}
+function canonicalSize(value) {
+  const text=normalize(value);
+  const match=text.match(/^(\d+(?:\.\d+)?)\s*x\s*(\d+(?:\.\d+)?)\s*cm$/);
+  return match ? [Number(match[1]),Number(match[2])].sort((a,b)=>a-b).join("x")+"cm" : text;
 }
 export function reply(message, previous = {}, knowledge, now = new Date(), classified = null) {
   const local = parseRequest(message, previous);
@@ -93,7 +98,7 @@ export function reply(message, previous = {}, knowledge, now = new Date(), class
     state.waitingFor="quantity";
     return result("Necesito una cantidad entera mayor a cero. Para pedidos de más de 10.000 unidades, un asesor preparará una cotización especial.",true);
   }
-  if (/\bpack\b|paquete/.test(normalize(message))) return result("Las opciones por paquete necesitan confirmar qué incluyen. Un asesor revisará el paquete y la cantidad para darte el precio correcto.",true);
+  if (/\bpack\b|paquete|oferta|promocion|regalo/.test(normalize(message))) return result("Las promociones y paquetes necesitan confirmar qué incluyen y su vigencia. Un asesor revisará las condiciones antes de aplicarlas a tu pedido.",true);
   if ([...normalize(message).matchAll(/\d+(?:[.,]\d+)?\s*(?:x|×|por)\s*\d+(?:[.,]\d+)?/g)].length > 1) {
     return result("Tu consulta incluye varias medidas. Para cotizar cada combinación correctamente, puedo pasar el pedido completo a un asesor. También puedes consultar una medida por vez.",true);
   }
@@ -105,10 +110,11 @@ export function reply(message, previous = {}, knowledge, now = new Date(), class
     if (quote.status === "unconfirmed") return result("Ya tengo los datos de tu pedido. El tarifario oficial está en preparación, por eso no puedo confirmar un importe vigente. Puedo pasar este resumen a un asesor de tu sede para que cotice el precio unitario y por cantidad.", true);
     if (quote.status === "branch") return result("Elige tu sede en el selector de abajo para consultar la tarifa que corresponde a tu pedido.");
     if (quote.status === "finish") { state.waitingFor="finish"; return result("Hay más de un acabado para esa medida. ¿Cuál prefieres? También puedes consultar las opciones con un asesor.",true); }
-    if (quote.status !== "ok") return result("Esa combinación de producto, medida, acabado y cantidad necesita una cotización del equipo. Te paso con un asesor para confirmarla.", true);
+    if (quote.status === "ambiguous") return result("La lista muestra dos tarifas que coinciden con esa cantidad. No elegiré una por deducción: un asesor debe confirmar cuál corresponde.",true);
+    if (quote.status !== "ok") return result("La lista no detalla una tarifa única para esa combinación de producto, medida, acabado y cantidad. Te paso con un asesor para confirmarla.", true);
     return {...result("Cotización estimada: " + state.quantity + " unidades de " + state.size + " (" + quote.finish + "). Precio por unidad: " + money(quote.unitPriceCents) + ". Total: " + money(quote.totalCents) + ". Tarifa " + quote.version + ". El asesor confirma disponibilidad y entrega."), quote};
   }
-  if (extracted.intent === "sizes") return result("En el cotizador aparecen estas medidas de foto: " + knowledge.photoSizes.join(", ") + ". Las medidas se expresan en centímetros. Para otra medida o una ampliación, dime cuál necesitas y lo revisamos con un asesor.", true);
+  if (extracted.intent === "sizes") return result("Algunas medidas de la lista son " + (knowledge.commonPhotoSizes || knowledge.photoSizes).join(", ") + ". También hay ampliaciones; dime la medida que buscas. Las medidas de fotos y de marcos se confirman por separado.", true);
   if (extracted.intent === "frames") return result("Para elegir un marco, primero necesitamos la medida de tu foto. La medida de la imagen, la abertura del paspartú y el tamaño exterior del marco pueden ser diferentes. Dime la medida y si quieres paspartú; un asesor confirmará materiales, colores, medidas disponibles y precio.",true);
   if (extracted.intent === "quality") return result("Comparte el archivo original cuando sea posible y evita capturas de pantalla. El encuadre puede cambiar al adaptar la imagen a otro formato. Un asesor puede revisar el archivo y acordar el recorte antes de imprimir.",true);
   if (extracted.intent === "delivery") return result("Los horarios, plazos, disponibilidad y costo de envío deben confirmarse con tu sede. Dime qué producto necesitas y para qué fecha; puedes incluirlo en el mensaje al asesor.",true);

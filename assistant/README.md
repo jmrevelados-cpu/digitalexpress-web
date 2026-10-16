@@ -1,44 +1,48 @@
-# Activación y mantenimiento
+# Tarifario y asistente de DIGITAL EXPRESS
 
-El asistente guiado funciona en el sitio estático: medidas, preparación de archivos, recopilación de solicitudes y derivación al WhatsApp oficial. La interpretación con IA es opcional y está preparada, pero NO está activada ni verificada con una cuenta real. Tampoco hay tarifas aprobadas.
+El asistente guiado y el cotizador usan la misma fuente: tarifario/precios-foto-2026-10-15.mjs. La conexión de IA sigue aplazada por indicación del titular; apiEndpoint permanece vacío.
 
-## Tarifario
+## Fuente comercial
 
-Completar la plantilla entregada al negocio. Revisar precios unitarios, tramos por cantidad, ampliaciones y marcos. Una fila por producto/medida/acabado/sede/tramo. Cantidades y precios vacíos no equivalen a cero ni a gratuidad. No acumular descuentos sobre los precios de los tramos.
+El titular entregó una fotografía de su lista y confirmó que los precios por cantidad son por cada foto. Se transcribieron 37 precios de lista, 30 tramos y 5 ofertas Jumbo. Los importes se guardan en céntimos. La fecha 2026-10-15 corresponde a recepción y confirmación, no a una fecha de emisión impresa.
 
-Una vez aprobado, cargar las filas en knowledge.mjs:
+La foto se conserva en tarifario/fuente-precios-2026-10-15.jpg. El Excel digitalizado incluye la fotografía y los puntos pendientes. El Excel es editable, pero no se sincroniza automáticamente con la web.
 
-    {
-      product: "fotos",
-      size: "10 x 15 cm",
-      finish: "Mate",
-      branch: "Todas",
-      minQuantity: 1,
-      maxQuantity: null,
-      unitPriceCents: /* importe aprobado en céntimos */
-    }
+- El importe unitario de un tramo se aplica a todas las fotos del pedido.
+- No se suman descuentos porcentuales del prototipo.
+- Las medidas en horizontal y vertical se reconocen como la misma impresión.
+- Los precios de lista se aplican a una foto. Cantidades omitidas necesitan confirmación.
+- Exactamente 1.000 fotos coincide con S/ 0,90 y S/ 0,85: el motor devuelve ambigüedad y deriva al asesor. A partir de 1.001, la fuente es inequívoca.
+- No aplicar las ofertas Jumbo hasta confirmar medida Jumbo, regalo, condiciones y vigencia.
+- No figuran precios de marcos ni especificaciones de acabados.
+- Se conservan solo los extremos explícitos 5x7 y 10x15 del grupo pequeño. Otros tamaños intermedios necesitan confirmación.
+- La fuente no indica fecha de caducidad: validUntil es null. Si el negocio aporta una fecha final, registrarla en knowledge.mjs y verificar el rechazo al vencer.
 
-Los productos válidos son fotos, ampliaciones, marcos y photobooks. Toda fila debe usar un acabado concreto; si hay varios, el asistente preguntará. branch es Todas o una de las tres sedes oficiales. maxQuantity null significa sin límite superior.
+## Actualizar precios
 
-Indicar version, approvedBy, source, validFrom y validUntil (YYYY-MM-DD), y cambiar approved a true solo con aprobación comercial. Validar con node --test assistant/core.test.mjs. La web anterior conserva su estimador y precios de referencia; deben revisarse también al aprobar el tarifario para evitar dos catálogos comerciales distintos. La hoja de cálculo no se sincroniza sola con el asistente.
+Editar la fuente, incrementar version y registrar quién/qué confirmó el cambio. No corregir solapamientos por deducción. knowledge.mjs genera las filas del cálculo a partir de basePrices y quantityGroups. Las promociones permanecen separadas del cálculo.
 
-## Conexión de IA
+Comprobar en una versión de prueba:
 
-Se consultó OpenAI Docs: [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs) y [API overview](https://developers.openai.com/api/reference/overview).
+    node --test assistant/core.test.mjs
 
-El servidor usa Responses API con JSON Schema estricto. El modelo clasifica intención y extrae datos, pero no genera precios ni respuestas comerciales libres. Se conserva store:false. Sin conexión, el asistente ofrece orientación guiada y contacto humano.
+Además, probar cotizador y asistente en un navegador: una unidad, extremos de cada tramo, cantidades omitidas, exactamente 1.000, formatos grandes y derivación a las tres sedes. El cambio reemplaza 15x21/S/9 del prototipo por 15x20/S/8 de la fuente.
 
-Para probar localmente, requiere Node.js 22 o posterior:
+## IA aplazada
+
+El servidor Node está preparado, pero no está conectado ni desplegado con una cuenta real. Usa Responses API con JSON Schema estricto: la IA interpreta intención/datos, mientras que el código consulta las tarifas y calcula. Se consultó [Structured Outputs](https://developers.openai.com/api/docs/guides/structured-outputs) y [API overview](https://developers.openai.com/api/reference/overview).
+
+Para revisar localmente con Node.js 22 o posterior:
 
     node assistant/server.mjs
 
-Antes de activar IA:
+Cuando se decida activar IA:
 
-1. Configurar OPENAI_API_KEY y OPENAI_MODEL como secretos/variables del servidor. Nunca incluir una clave en HTML, JavaScript público ni Git. No se requiere para las pruebas simuladas.
-2. Alojar el servidor en un servicio compatible con Node.js y HTTPS. Un sitio estático o GitHub Pages no ejecuta este servidor.
-3. Configurar ALLOWED_ORIGIN con el origen exacto de producción, PORT y BIND_HOST según el alojamiento. No activar CORS abierto. El servidor actual exige mismo origen.
-4. Configurar límites de gasto del proveedor y protección de tráfico en el alojamiento. El límite incluido es de 20 solicitudes/minuto por IP en un solo proceso; para réplicas o un proxy compartido se necesita un límite centralizado antes del servidor.
-5. Cambiar apiEndpoint en knowledge.mjs a /api/assistant y desplegar frontend y servidor juntos. Al estar vacía, la web no envía consultas a un proveedor de IA.
-6. Probar con la cuenta real: mensajes coloquiales, desconocidos, fallos del proveedor, cotización con una tarifa aprobada y derivación a las tres sedes. Los tests incluidos usan un proveedor simulado y no validan credenciales ni calidad lingüística de un modelo real.
+1. Configurar OPENAI_API_KEY y OPENAI_MODEL solo en el servidor. Nunca poner una clave en el código público.
+2. Usar alojamiento Node con HTTPS; GitHub Pages no ejecuta el servidor.
+3. Configurar ALLOWED_ORIGIN, PORT y BIND_HOST para el alojamiento.
+4. Añadir límites de gasto y de tráfico. El límite incluido es 20 solicitudes/minuto por IP en un proceso; con proxy o réplicas se necesita un límite centralizado.
+5. Cambiar apiEndpoint a /api/assistant y desplegar frontend y servidor juntos.
+6. Probar con la cuenta real. Las pruebas incluidas usan un proveedor simulado.
 
-La respuesta de atención humana depende de la sede. Esta integración abre un mensaje preparado en WhatsApp; no crea una cola ni conecta la API de WhatsApp Business.
+La conversación se mantiene solo en memoria del navegador. El contacto humano abre un resumen en WhatsApp para que el cliente lo revise y envíe; no crea una cola de atención ni integra WhatsApp Business API.

@@ -14,13 +14,17 @@ Asistente virtual de atención comercial. Se presenta como atención automática
 
 ## Precios
 
-La fuente del asistente es knowledge.mjs. Actualmente el tarifario NO está aprobado y sus filas están vacías porque el negocio aún lo está estructurando. No se copian como vigentes los cinco precios del prototipo web.
+La fuente es tarifario/precios-foto-2026-10-15.mjs, transcripción de la fotografía entregada por el titular. El negocio confirmó que los precios por cantidad son por cada foto. knowledge.mjs construye las tarifas para fotos y ampliaciones a partir de esta fuente; el cotizador y el asistente comparten el mismo cálculo.
 
 Cada fila futura identifica producto, medida, acabado, sede, cantidad mínima y máxima y precio final por unidad en céntimos. Los límites son inclusivos. La tarifa de un tramo se aplica a todas las unidades del pedido. No es un cálculo escalonado por segmentos. Si el negocio requiere paquetes o tarifas marginales se añade esa modalidad antes de activarla.
 
 No se suman descuentos porcentuales antiguos a una tarifa por tramo. Las filas no deben solaparse para una misma combinación. Faltantes, duplicados, fechas vencidas o precios inválidos requieren asesor.
 
-Se exige aprobación, responsable, fuente, versión y vigencia desde/hasta en fecha de Lima. El cálculo de importes se hace en código; la IA solo identifica intención y datos. Las filas de fotos, ampliaciones y marcos son independientes.
+Se registran responsable, fuente, versión y fecha de confirmación en Lima. La fuente no imprime una fecha final de vigencia y se guarda como null, sin inventarla. Si se comunica una fecha final, el motor rechaza cotizaciones posteriores. El cálculo se hace en código y la IA sigue aplazada.
+
+La lista tiene 37 precios base para una foto, 30 tramos por cantidad y cinco ofertas Jumbo. Las ofertas están desactivadas hasta aclarar sus condiciones. Para exactamente 1.000 fotos coinciden dos precios y se deriva al asesor. No se rellenan rangos omitidos ni se inventan precios de marcos o acabados. El grupo de 5x7 a 10x15 solo se calcula para sus extremos explícitos hasta confirmar los tamaños intermedios. Las filas equivalentes de 10x15 a una unidad se deduplican.
+
+Los acabados se describen como por confirmar. Si el cliente pide expresamente uno que no figura en la fuente, se deriva al asesor. La lista no distingue precios por sede; el asesor confirma las condiciones de su sede. Los precios de lista no se extienden a cantidades no publicadas por deducción.
 
 ## Asesor humano
 

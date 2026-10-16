@@ -524,7 +524,7 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
                 <option value="">Selecciona un tamaño</option>
                 <option value="10 x 15 cm">10 x 15 cm</option>
                 <option value="13 x 18 cm">13 x 18 cm</option>
-                <option value="15 x 21 cm">15 x 21 cm</option>
+                <option value="15 x 20 cm">15 x 20 cm</option>
                 <option value="20 x 30 cm">20 x 30 cm</option>
                 <option value="30 x 40 cm">30 x 40 cm</option>
               </select>
@@ -535,7 +535,7 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
               <label for="cantidad">Cantidad</label>
               <input type="number" id="cantidad" name="cantidad" min="1" step="1" placeholder="Ej. 24">
               <span class="error-msg">Ingresa una cantidad mayor a 0.</span>
-              <span class="hint">20+ tiene 5% dscto. · 50+ tiene 10% · 100+ tiene 20%</span>
+              <span class="hint">El precio por foto cambia según medida y cantidad. Los casos no detallados los confirma tu sede.</span>
             </div>
           </div>
 
@@ -590,16 +590,16 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
       <div class="section-head">
         <p class="kicker">Impresión fotográfica</p>
         <h2>Tamaños y precios</h2>
-        <p>Precios por unidad en soles. Photobooks, cuadros, calendarios y demás productos se cotizan a medida en el formulario de arriba.</p>
+        <p>Precios en soles para una sola foto. El cotizador usa los tramos publicados por medida y cantidad. Marcos y demás productos se cotizan con tu sede.</p>
       </div>
       <div class="price-grid">
         <div class="price-card"><div class="size">10 x 15 cm</div><div class="price">S/ 5</div><div class="unit">por unidad</div></div>
         <div class="price-card"><div class="size">13 x 18 cm</div><div class="price">S/ 7</div><div class="unit">por unidad</div></div>
-        <div class="price-card"><div class="size">15 x 21 cm</div><div class="price">S/ 9</div><div class="unit">por unidad</div></div>
+        <div class="price-card"><div class="size">15 x 20 cm</div><div class="price">S/ 8</div><div class="unit">por unidad</div></div>
         <div class="price-card"><div class="size">20 x 30 cm</div><div class="price">S/ 18</div><div class="unit">por unidad</div></div>
         <div class="price-card"><div class="size">30 x 40 cm</div><div class="price">S/ 35</div><div class="unit">por unidad</div></div>
       </div>
-      <div class="discount-note">💡 <span>Pedidos desde 20 unidades acceden a descuentos automáticos: 5% desde 20, 10% desde 50 y 20% desde 100 unidades.</span></div>
+      <div class="discount-note"><span>Ejemplo: 20 fotos de 10 x 15 cm cuestan S/ 3,00 cada una, total S/ 60,00. Las promociones y los casos no detallados deben confirmarse con tu sede.</span></div>
     </div>
   </section>
 
@@ -615,7 +615,7 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
         <div class="step">
           <div class="n">1</div>
           <h3>Cotiza en línea</h3>
-          <p>Elige servicio, tamaño y cantidad. El precio se calcula al instante, con descuentos por volumen incluidos.</p>
+          <p>Elige servicio, tamaño y cantidad. Calculamos el total con el precio por foto del rango publicado que corresponde a tu pedido.</p>
         </div>
         <div class="step">
           <div class="n">2</div>
@@ -816,12 +816,14 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
 <nav class="mobile-dock" aria-label="Accesos rápidos"><a href="#cotizador">Preparar pedido</a><a href="#sedes">Contactar una sede</a></nav>
 <div class="toast" id="toast" role="status"></div>
 
-<script>
+<script type="module">
+import knowledge from "./assistant/knowledge.mjs";
+import {getQuote} from "./assistant/core.mjs";
 (function () {
   "use strict";
 
   const CATEGORIAS = [
-    { nombre:"Fotos", servicio:"Impresión fotográfica", descripcion:"Imprime tus favoritas en cinco tamaños.", palabras:"impresion fotografica fotos", imagen:"fotos", color:"#EDF0E6" },
+    { nombre:"Fotos", servicio:"Impresión fotográfica", descripcion:"Fotos y ampliaciones en los formatos de nuestra lista.", palabras:"impresion fotografica fotos ampliaciones", imagen:"fotos", color:"#EDF0E6" },
     { nombre:"Photobooks", servicio:"Fotolibro", descripcion:"Tus historias reunidas en un fotolibro.", palabras:"album libro fotolibro photobook", imagen:"photobooks", color:"#F4E8DE" },
     { nombre:"Cuadros", servicio:"Cuadro", descripcion:"Dale un lugar especial a tu foto favorita.", palabras:"cuadros pared marco", imagen:"cuadros", color:"#E6EEF0" },
     { nombre:"Galería de cuadros", servicio:"Galería de cuadros", descripcion:"Combina recuerdos para crear tu galería.", palabras:"galeria cuadros pared", imagen:"galeria", color:"#EFEADC" },
@@ -848,20 +850,7 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
   buscador.addEventListener("input", pintarCatalogo);
   pintarCatalogo();
 
-  /* ============ Config de precios ============ */
-  const preciosImpresion = {
-    "10 x 15 cm": 5,
-    "13 x 18 cm": 7,
-    "15 x 21 cm": 9,
-    "20 x 30 cm": 18,
-    "30 x 40 cm": 35
-  };
-
-  // Servicios cuyo precio depende del pedido y se confirma a medida.
-  const serviciosSinPrecioAutomatico = new Set([
-    "Fotolibro", "Cuadro", "Galería de cuadros", "Calendario",
-    "Accesorios", "Tarjetas", "Gifts", "Revelado digital"
-  ]);
+  /* Precios y rangos compartidos con el asistente, transcritos de la fuente del negocio. */
 
   const SEDES = { Chacarilla:"51968241599", "Monte Grande":"51968229804", Chorrillos:"51962292116" };
   const campoSede = document.querySelector("#sede");
@@ -872,6 +861,15 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
   const campoServicio = document.querySelector("#servicio");
   const campoTamanoWrap = document.querySelector("#campo-tamano");
   const campoTamano = document.querySelector("#tamano");
+  campoTamano.replaceChildren(new Option("Selecciona un tamaño",""), ...knowledge.photoSizes.map(size=>new Option(size,size)));
+  // Visible price examples use the same source as the calculator and assistant.
+  document.querySelectorAll(".price-card").forEach(card=>{
+    const quote=getQuote({product:"fotos",size:card.querySelector(".size").textContent,quantity:1,branch:"Chacarilla"},knowledge);
+    card.querySelector(".price").textContent=quote.status==="ok"?"S/ "+(quote.unitPriceCents/100).toFixed(2):"Consultar";
+    card.querySelector(".unit").textContent="para 1 foto";
+  });
+  const ejemplo=getQuote({product:"fotos",size:"10 x 15 cm",quantity:20,branch:"Chacarilla"},knowledge);
+  if(ejemplo.status==="ok") document.querySelector(".discount-note span").textContent="Ejemplo: 20 fotos de 10 x 15 cm cuestan S/ "+(ejemplo.unitPriceCents/100).toFixed(2)+" cada una, total S/ "+(ejemplo.totalCents/100).toFixed(2)+". Las promociones y los casos no detallados deben confirmarse con tu sede.";
   const campoCantidad = document.querySelector("#cantidad");
   const ticketBody = document.querySelector("#ticket-body");
   const ticketCode = document.querySelector("#ticket-code");
@@ -933,22 +931,6 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
     return codigo;
   }
 
-  function calcularPrecioUnitario(servicio, tamano) {
-    if (servicio === "Impresión fotográfica") {
-      return Object.prototype.hasOwnProperty.call(preciosImpresion, tamano)
-        ? preciosImpresion[tamano]
-        : null;
-    }
-    return null; // el resto se cotiza a medida
-  }
-
-  function calcularPorcentajeDescuento(cantidad) {
-    if (cantidad >= 100) return 0.2;
-    if (cantidad >= 50) return 0.1;
-    if (cantidad >= 20) return 0.05;
-    return 0;
-  }
-
   function formatearMoneda(valor) {
     return `S/ ${valor.toFixed(2)}`;
   }
@@ -983,7 +965,7 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
     if (!datos.servicio) { marcarError(document.querySelector('[data-field="servicio"]')); esValido = false; }
 
     if (datos.servicio === "Impresión fotográfica") {
-      if (!datos.tamano || !Object.prototype.hasOwnProperty.call(preciosImpresion, datos.tamano)) {
+      if (!datos.tamano || !knowledge.photoSizes.includes(datos.tamano)) {
         marcarError(campoTamanoWrap);
         esValido = false;
       }
@@ -1011,17 +993,12 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
 
   /* ============ Cálculo compartido (vista previa y envío) ============ */
   function calcularPedido(datos) {
-    const precioUnitario = calcularPrecioUnitario(datos.servicio, datos.tamano);
-    const cotizable = precioUnitario !== null && Number.isSafeInteger(datos.cantidad) && datos.cantidad > 0;
-
-    if (!cotizable) return { cotizable: false, precioUnitario, servicio: datos.servicio };
-
-    const subtotalSinDescuento = precioUnitario * datos.cantidad;
-    const porcentajeDescuento = calcularPorcentajeDescuento(datos.cantidad);
-    const descuento = subtotalSinDescuento * porcentajeDescuento;
-    const total = subtotalSinDescuento - descuento;
-
-    return { cotizable: true, precioUnitario, subtotalSinDescuento, porcentajeDescuento, descuento, total };
+    if (datos.servicio !== "Impresión fotográfica") return {cotizable:false,mensaje:"Este servicio se cotiza a medida. Envía tu solicitud y te confirmamos el precio por WhatsApp."};
+    if (!datos.tamano || !Number.isSafeInteger(datos.cantidad) || datos.cantidad<1) return {cotizable:false,mensaje:"Selecciona un tamaño y una cantidad entera mayor a cero."};
+    if (!datos.sede) return {cotizable:false,mensaje:"Selecciona tu sede para preparar el estimado."};
+    const quote=getQuote({product:"fotos",size:datos.tamano,quantity:datos.cantidad,branch:datos.sede},knowledge);
+    if (quote.status!=="ok") return {cotizable:false,mensaje:quote.status==="ambiguous"?"La lista muestra dos precios para esta cantidad. Tu sede debe confirmar cuál corresponde.":"Esta combinación no tiene una tarifa única publicada. Tu sede te confirmará el precio."};
+    return {cotizable:true,precioUnitario:quote.unitPriceCents/100,subtotalSinDescuento:quote.totalCents/100,porcentajeDescuento:0,descuento:0,total:quote.totalCents/100};
   }
 
   /* ============ Vista previa en vivo del resumen ============ */
@@ -1038,9 +1015,7 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
     ticketCode.textContent = "Vista previa";
 
     if (!calculo.cotizable) {
-      const mensaje = serviciosSinPrecioAutomatico.has(datos.servicio)
-        ? "Este servicio se cotiza a medida. Envía tu pedido y te confirmamos el precio por WhatsApp."
-        : "Selecciona un tamaño y una cantidad válida para ver el precio.";
+      const mensaje = calculo.mensaje;
       ticketBody.innerHTML = `<p class="ticket-empty">${mensaje}</p>`;
       return;
     }
@@ -1051,7 +1026,6 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
       <div class="ticket-row muted"><span>Cantidad</span><span>${datos.cantidad}</span></div>
       <hr class="ticket-divider">
       <div class="ticket-row"><span>Subtotal</span><span>${formatearMoneda(calculo.subtotalSinDescuento)}</span></div>
-      <div class="ticket-row" style="color:var(--blue)"><span>Descuento (${(calculo.porcentajeDescuento * 100).toFixed(0)}%)</span><span>-${formatearMoneda(calculo.descuento)}</span></div>
       <hr class="ticket-divider">
       <div class="ticket-total"><span>Total</span><b>${formatearMoneda(calculo.total)}</b></div>
     `;
@@ -1112,6 +1086,7 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
       detalles: datos.mensaje || "Sin observaciones adicionales",
       sede: datos.sede,
       canal: "Página web",
+      versionTarifa: calculo.cotizable ? knowledge.tariff.version : null,
       prioridad: "Normal",
       metodoEntrega: "Recojo en tienda",
       estado: "Cotización",
@@ -1141,7 +1116,7 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
       ticketBody.innerHTML = `
         <div class="ticket-row"><span>Servicio</span><span>${pedido.servicio}</span></div>
         <div class="ticket-row"><span>Cantidad</span><span>${pedido.cantidad}</span></div>
-        <p class="ticket-empty" style="margin-top:12px;">Este servicio se cotiza a medida. Te confirmamos el precio final por WhatsApp.</p>
+        <p class="ticket-empty" style="margin-top:12px;">${escaparHtml(calculo.mensaje)}</p>
       `;
     } else {
       ticketBody.innerHTML = `
@@ -1152,7 +1127,6 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
         <div class="ticket-row muted"><span>Cantidad</span><span>${pedido.cantidad}</span></div>
         <hr class="ticket-divider">
         <div class="ticket-row"><span>Subtotal</span><span>${formatearMoneda(pedido.subtotalSinDescuento)}</span></div>
-        <div class="ticket-row" style="color:var(--blue)"><span>Descuento (${(pedido.porcentajeDescuento * 100).toFixed(0)}%)</span><span>-${formatearMoneda(pedido.descuento)}</span></div>
         <hr class="ticket-divider">
         <div class="ticket-total"><span>Total</span><b>${formatearMoneda(pedido.total)}</b></div>
       `;

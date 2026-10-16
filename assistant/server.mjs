@@ -106,7 +106,7 @@ export function createAssistantServer({env=process.env,k=knowledge,fetcher=fetch
     let file;
     if(pathname==="/") file="index.html";
     else if(/^\/assets\/productos\/[a-z0-9-]+\.webp$/.test(pathname)) file=pathname.slice(1);
-    else if(["/assistant/ui.js","/assistant/ui.css","/assistant/core.mjs","/assistant/knowledge.mjs"].includes(pathname)) file=pathname.slice(1);
+    else if(["/assistant/ui.js","/assistant/ui.css","/assistant/core.mjs","/assistant/knowledge.mjs","/tarifario/precios-foto-2026-10-15.mjs"].includes(pathname)) file=pathname.slice(1);
     else {res.writeHead(404);res.end();return;}
     try {
       const content=await readFile(path.join(root,file));
