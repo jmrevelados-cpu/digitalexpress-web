@@ -40,3 +40,19 @@
  .assistant-shell{max-height:calc(100dvh - 26px)}
  .assistant-header{padding:14px 16px}.assistant-scroll{padding:14px 14px 0}.assistant-compose{padding:10px 14px}
 }
+
+/* Guided catalog and quote flow */
+.guided-flow{padding:12px;border:1px solid #ddd2c4;border-radius:12px;margin:10px 0;display:grid;gap:10px;background:#fffdf9;color:#252525}
+.guided-flow h3{font-size:1rem;margin:0}
+.guided-flow p{margin:0;line-height:1.45}
+.guided-catalog{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.guided-flow button,.guided-whatsapp{cursor:pointer;border:1px solid #c4b5a5;border-radius:8px;padding:9px;background:#fff;color:#252525;text-align:left;font:inherit}
+.guided-product{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0}
+.guided-product img{width:100%;max-width:125px;height:74px;object-fit:cover;border-radius:6px}
+.guided-field{display:grid;gap:5px;font-weight:600}
+.guided-field input,.guided-field select,.guided-field textarea{width:100%;min-width:0;padding:9px;border:1px solid #aaa;border-radius:7px;font:inherit;font-weight:400;background:white;color:#222}
+.guided-whatsapp{display:block;text-decoration:none;background:#e7f5e9;border-color:#a1c9a8}
+.guided-flow details{border-bottom:1px solid #ddd;padding:8px 0}
+.guided-flow summary{cursor:pointer;font-weight:600}
+.guided-flow :focus-visible{outline:3px solid #6d5b47;outline-offset:2px}
+@media(max-width:360px){.guided-catalog{grid-template-columns:1fr}}
