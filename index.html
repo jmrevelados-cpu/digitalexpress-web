@@ -40,11 +40,13 @@ $("clear").addEventListener("click",()=>{$("product").value="";$("size").value="
 
 const collections=[
 ["Impresión de fotos","fotos.webp","Fotos en distintos tamaños y acabados","fotos"],
-["Ampliaciones","ampliaciones.webp","Impresiones para destacar tus recuerdos","ampliaciones"],
-["Marcos y cuadros","marcos.webp","Opciones para exhibir tus fotos","marcos"],
-["Álbumes y fotolibros","albumes.webp","Recuerdos reunidos en un solo lugar","albumes"],
-["Tazas y personalizados","tazas.webp","Regalos con tus fotografías","tazas"],
-["Calendarios","calendarios.webp","Calendarios con fotos personales","calendarios"]
+["Ampliaciones","revelado.webp","Impresiones para destacar tus recuerdos","ampliaciones"],
+["Marcos y cuadros","cuadros.webp","Opciones para exhibir tus fotos","marcos"],
+["Álbumes y fotolibros","photobooks.webp","Recuerdos reunidos en un solo lugar","albumes"],
+["Tazas y personalizados","gifts.webp","Regalos con tus fotografías","tazas"],
+["Calendarios","calendarios.webp","Calendarios con fotos personales","calendarios"],
+["Tarjetas","tarjetas.webp","Tarjetas para fechas especiales","tarjetas"],
+["Llaveros y accesorios","accesorios.webp","Recuerdos que te acompañan","accesorios"]
 ];
 for(const [title,image,description,match] of collections){
  const card=document.createElement("article");card.className="collection";
