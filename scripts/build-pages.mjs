@@ -9,6 +9,8 @@ const files = [
   "index.html",
   "assistant/ui.css",
   "assistant/ui.js",
+  "assistant/guided.mjs",
+  "assistant/guided-ui.mjs",
   "assistant/core.mjs",
   "assistant/knowledge.mjs",
   "tarifario/precios-foto-2026-10-15.mjs"
