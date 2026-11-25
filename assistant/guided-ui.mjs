@@ -7,6 +7,32 @@ export function mountGuidedAssistant({panel,branch,launcher}) {
   section.className="guided-flow";
   section.setAttribute("aria-label","Asistente comercial guiado");
   shortcuts.before(section);
+  const chatLog=panel.querySelector("#assistant-log");
+  const composer=panel.querySelector("#assistant-form");
+  const modeBar=document.createElement("div");
+  modeBar.className="assistant-modes";
+  modeBar.setAttribute("role","group");
+  modeBar.setAttribute("aria-label","Modo de atención de Chispa");
+  const guidedTab=document.createElement("button");
+  guidedTab.type="button";
+  guidedTab.textContent="Elegir productos";
+  const chatTab=document.createElement("button");
+  chatTab.type="button";
+  chatTab.textContent="Escribir consulta";
+  modeBar.append(guidedTab,chatTab);
+  section.before(modeBar);
+  function setMode(mode) {
+    const guided=mode==="guided";
+    section.hidden=!guided;
+    if(chatLog) chatLog.hidden=guided;
+    shortcuts.hidden=guided;
+    if(composer) composer.hidden=guided;
+    guidedTab.setAttribute("aria-pressed",String(guided));
+    chatTab.setAttribute("aria-pressed",String(!guided));
+  }
+  guidedTab.addEventListener("click",()=>setMode("guided"));
+  chatTab.addEventListener("click",()=>setMode("chat"));
+  setMode("guided");
   const state={product:"",size:"",quantity:"",delivery:"pickup",notes:""};
   let stage="catalog";
   function el(tag,txt,cls) {
@@ -33,7 +59,7 @@ export function mountGuidedAssistant({panel,branch,launcher}) {
   function reset(){Object.assign(state,{product:"",size:"",quantity:"",delivery:"pickup",notes:""});stage="catalog";render();}
   function render(){
     section.replaceChildren();
-    section.append(el("h3","Compra guiada · sin IA"));
+    section.append(el("h3","Chispa te ayuda a elegir"));
     if(stage==="catalog"){
       section.append(el("p","Elige el producto que deseas cotizar."));
       const grid=el("div",undefined,"guided-catalog");
