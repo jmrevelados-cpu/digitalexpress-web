@@ -8,7 +8,7 @@ export function mountGuidedAssistant({panel,branch,launcher}) {
   section.setAttribute("aria-label","Asistente comercial guiado");
   shortcuts.before(section);
   const chatLog=panel.querySelector("#assistant-log");
-  const composer=panel.querySelector(".assistant-compose");
+  const composer=panel.querySelector("#assistant-form");
   const modeBar=document.createElement("div");
   modeBar.className="assistant-modes";
   modeBar.setAttribute("role","group");
