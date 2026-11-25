@@ -18,7 +18,7 @@ const fixture = () => ({
     ]
   }
 });
-const request = {product:"fotos",size:"10 x 15 cm",quantity:20,finish:"Mate",branch:"Chacarilla"};
+const request = {product:"fotos",size:"10 x 15 cm",quantity:20,finish:"Mate",branch:"PRIMAVERA"};
 
 test("commercial data stays unapproved and empty until the business supplies it",()=>{
   const pending={...structuredClone(k),tariff:{...structuredClone(k.tariff),approved:false,rows:[]}};
@@ -48,7 +48,7 @@ test("no outdated, unapproved, ambiguous, invalid or foreign-branch prices",()=>
   assert.equal(getQuote(request,data,now).status,"invalid");
 });
 test("slot collection, followups, multi-size requests and human requests",()=>{
-  let response=reply("Quiero cotizar fotos",{branch:"Chacarilla"},k,now);
+  let response=reply("Quiero cotizar fotos",{branch:"PRIMAVERA"},k,now);
   assert.equal(response.state.waitingFor,"size");
   response=reply("10x15",response.state,k,now);
   assert.equal(response.state.waitingFor,"quantity");
@@ -68,7 +68,7 @@ test("slot collection, followups, multi-size requests and human requests",()=>{
   assert.ok(reply("Precio por paquete de 20 fotos 10x15",{},fixture(),now).handoff);
 });
 test("prices and URLs from model/user content never become business facts",()=>{
-  const answer=reply("palabras ambiguas",{branch:"Chacarilla"},k,now,{intent:"quote",product:"fotos",size:"10 x 15 cm",quantity:20,finish:null,price:0,url:"https://bad.example"});
+  const answer=reply("palabras ambiguas",{branch:"PRIMAVERA"},k,now,{intent:"quote",product:"fotos",size:"10 x 15 cm",quantity:20,finish:null,price:0,url:"https://bad.example"});
   assert.equal(answer.quote.totalCents,6000);
   assert.doesNotMatch(answer.text,/bad.example/);
   for(const [branch,number] of Object.entries(k.branches)) {
@@ -97,7 +97,7 @@ test("server validates origin/body, serves only public files and recovers from p
   const base="http://127.0.0.1:"+server.address().port;
   try {
     const headers={Origin:"https://shop.example","Content-Type":"application/json"};
-    let response=await fetch(base+"/api/assistant",{method:"POST",headers,body:JSON.stringify({message:"Quiero 20 fotos 10x15",state:{branch:"Chacarilla"}})});
+    let response=await fetch(base+"/api/assistant",{method:"POST",headers,body:JSON.stringify({message:"Quiero 20 fotos 10x15",state:{branch:"PRIMAVERA"}})});
     assert.equal(response.status,200);
     const data=await response.json();
     assert.equal(data.mode,"guided");
@@ -114,7 +114,7 @@ test("photographed price list: real prices, range limits, unknown gaps, overlap 
   assert.equal(source.basePrices.length,37);
   assert.equal(source.quantityGroups.reduce((n,g)=>n+g.rows.length,0),30);
   assert.equal(source.promotions.length,5);
-  const actual=(size,quantity,product="fotos")=>getQuote({product,size,quantity,branch:"Chacarilla"},k,now);
+  const actual=(size,quantity,product="fotos")=>getQuote({product,size,quantity,branch:"PRIMAVERA"},k,now);
   for(const [qty,unit] of [[1,500],[2,400],[5,400],[6,350],[10,350],[11,300],[20,300],[21,250],[30,250],[31,200],[50,200],[51,150],[100,150],[101,130],[150,130],[151,120],[200,120],[201,110],[250,110],[251,100],[500,100],[501,95],[750,95],[751,90],[999,90],[1001,85]]){
     assert.equal(actual("10 x 15 cm",qty).unitPriceCents,unit);
     assert.equal(actual("10 x 15 cm",qty).totalCents,unit*qty);

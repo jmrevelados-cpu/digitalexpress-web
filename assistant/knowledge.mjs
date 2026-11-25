@@ -13,7 +13,7 @@ for(const product of ["fotos","ampliaciones"]) {
 export default {
   brand:"DIGITAL EXPRESS",
   apiEndpoint:"",
-  branches:{Chacarilla:"51968241599","Monte Grande":"51968229804",Chorrillos:"51962292116"},
+  branches:{PRIMAVERA:"51968241599","Monte Grande":"51968229804",Chorrillos:"51962292116"},
   photoSizes:["5 x 7 cm",...source.basePrices.map(row=>sizeLabel(row.size))],
   commonPhotoSizes:["5 x 7 cm","10 x 15 cm","13 x 18 cm","15 x 15 cm","15 x 20 cm","20 x 25 cm","20 x 30 cm"],
   tariff:{

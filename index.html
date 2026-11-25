@@ -541,7 +541,7 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
 
           <h3 class="form-step"><span>2</span> Elige tu sede y déjanos tus datos</h3>
  <div class="field" data-field="sede"><label for="sede">¿Con qué sede quieres coordinar?</label>
- <select id="sede" name="sede"><option value="">Selecciona una sede</option><option value="Chacarilla">Chacarilla · Santiago de Surco</option><option value="Monte Grande">Monte Grande · Santiago de Surco</option><option value="Chorrillos">Chorrillos</option></select>
+ <select id="sede" name="sede"><option value="">Selecciona una sede</option><option value="PRIMAVERA">PRIMAVERA · Santiago de Surco</option><option value="Monte Grande">Monte Grande · Santiago de Surco</option><option value="Chorrillos">Chorrillos</option></select>
  <span class="error-msg">Selecciona la sede que atenderá tu pedido.</span></div>
           <div class="row-2">
             <div class="field" data-field="nombre">
@@ -642,7 +642,7 @@ a.cat-card:hover .product-visual img{transform:scale(1.035)}
       <div class="cat-grid" id="sedes-grid">
         <div class="cat-card" style="cursor:default;">
           <div class="cat-info">
-            <h3>Chacarilla</h3>
+            <h3>PRIMAVERA</h3>
             <p style="color:var(--ink-soft); font-size:.9rem; margin:6px 0 12px;">Av. Primavera 270, Tda. 105, C.C. Chacarilla — Santiago de Surco</p>
             <a href="https://wa.me/51968241599" target="_blank" rel="noopener" style="color:var(--red); font-weight:600; font-size:.88rem; text-decoration:none;">WhatsApp 968 241 599 →</a>
           </div>
@@ -852,7 +852,7 @@ import {getQuote} from "./assistant/core.mjs";
 
   /* Precios y rangos compartidos con el asistente, transcritos de la fuente del negocio. */
 
-  const SEDES = { Chacarilla:"51968241599", "Monte Grande":"51968229804", Chorrillos:"51962292116" };
+  const SEDES = { PRIMAVERA:"51968241599", "Monte Grande":"51968229804", Chorrillos:"51962292116" };
   const campoSede = document.querySelector("#sede");
   const escaparHtml = valor => String(valor).replace(/[&<>"']/g, caracter => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[caracter]));
 
@@ -864,11 +864,11 @@ import {getQuote} from "./assistant/core.mjs";
   campoTamano.replaceChildren(new Option("Selecciona un tamaño",""), ...knowledge.photoSizes.map(size=>new Option(size,size)));
   // Visible price examples use the same source as the calculator and assistant.
   document.querySelectorAll(".price-card").forEach(card=>{
-    const quote=getQuote({product:"fotos",size:card.querySelector(".size").textContent,quantity:1,branch:"Chacarilla"},knowledge);
+    const quote=getQuote({product:"fotos",size:card.querySelector(".size").textContent,quantity:1,branch:"PRIMAVERA"},knowledge);
     card.querySelector(".price").textContent=quote.status==="ok"?"S/ "+(quote.unitPriceCents/100).toFixed(2):"Consultar";
     card.querySelector(".unit").textContent="para 1 foto";
   });
-  const ejemplo=getQuote({product:"fotos",size:"10 x 15 cm",quantity:20,branch:"Chacarilla"},knowledge);
+  const ejemplo=getQuote({product:"fotos",size:"10 x 15 cm",quantity:20,branch:"PRIMAVERA"},knowledge);
   if(ejemplo.status==="ok") document.querySelector(".discount-note span").textContent="Ejemplo: 20 fotos de 10 x 15 cm cuestan S/ "+(ejemplo.unitPriceCents/100).toFixed(2)+" cada una, total S/ "+(ejemplo.totalCents/100).toFixed(2)+". Las promociones y los casos no detallados deben confirmarse con tu sede.";
   const campoCantidad = document.querySelector("#cantidad");
   const ticketBody = document.querySelector("#ticket-body");
