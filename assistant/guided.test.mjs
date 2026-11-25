@@ -29,3 +29,16 @@ test("handoff respects all three official branch WhatsApp numbers",()=>{
   assert.equal(guidedHandoff({product:"fotos",branch:"Inexistente"}),null);
   assert.equal(guidedHandoff({product:"inexistente",branch:"PRIMAVERA"}),null);
 });
+
+test("promotions are never applied automatically to guided quotes",()=>{
+  const regular=guidedQuote({product:"fotos",size:"10 x 15 cm",quantity:20,branch:"PRIMAVERA"});
+  assert.equal(regular.status,"ok");
+  assert.equal(regular.totalCents,6000);
+  assert.equal(regular.unitPriceCents,300);
+  assert.ok(!Object.hasOwn(regular,"promotion"));
+  assert.ok(!Object.hasOwn(regular,"discount"));
+  const promoFAQ=faqs.find(x=>/promociones/i.test(x.question));
+  assert.ok(promoFAQ);
+  assert.match(promoFAQ.answer,/confirmaci[oó]n/i);
+  assert.match(promoFAQ.answer,/no se acumulan autom[aá]ticamente/i);
+});
