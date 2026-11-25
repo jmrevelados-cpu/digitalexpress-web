@@ -86,3 +86,23 @@
 .guided-flow .guided-product{transition:border-color .15s,box-shadow .15s}
 .guided-flow .guided-product:hover{border-color:#6d816d;box-shadow:0 2px 9px #18251b14}
 @media(prefers-reduced-motion:reduce){.guided-flow .guided-product{transition:none}}
+
+/* Portada enfocada en la compra: producto -> pedido -> WhatsApp.
+   Secciones secundarias permanecen en el código para futura revisión. */
+#inspiracion,#precios,#como-funciona,#diseno,#testimonios,#preguntas{display:none!important}
+.welcome{padding-top:42px!important;padding-bottom:40px!important}
+.welcome h1{font-size:clamp(2rem,4.2vw,3.8rem)!important;line-height:1.12!important}
+.welcome-copy{max-width:490px}
+#categorias{padding-top:36px!important}
+#categorias .section-head{margin-bottom:18px!important}
+#categorias .section-head h2{font-size:clamp(1.6rem,3vw,2.5rem)!important}
+#categorias .cat-grid{gap:14px!important}
+#categorias .catalog-search{margin-bottom:20px!important}
+#cotizador{scroll-margin-top:90px}
+#sedes{scroll-margin-top:90px}
+@media(max-width:700px){
+ .welcome{padding-top:26px!important;padding-bottom:20px!important}
+ .welcome-grid{gap:18px!important}
+ .welcome h1{font-size:clamp(1.9rem,8vw,2.7rem)!important}
+ #categorias{padding-top:24px!important}
+}
