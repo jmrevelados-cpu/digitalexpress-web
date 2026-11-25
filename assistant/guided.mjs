@@ -19,7 +19,7 @@ export const faqs = [
   {question:"¿Hacen delivery?",answer:"Puedes solicitar delivery o recojo. La sede confirmará cobertura, costo y plazo antes del pedido."},
   {question:"¿Qué medios de pago aceptan?",answer:"Consulta los medios de pago con tu sede. No ingreses datos bancarios en este asistente."},
   {question:"¿Cómo aplican las promociones?",answer:"Las promociones requieren confirmación de condiciones y vigencia por un asesor; no se acumulan automáticamente."},
-  {question:"¿Dónde están las sedes?",answer:"Selecciona Chacarilla, Monte Grande o Chorrillos y contacta por su WhatsApp oficial."}
+  {question:"¿Dónde están las sedes?",answer:"Selecciona PRIMAVERA, Monte Grande o Chorrillos y contacta por su WhatsApp oficial."}
 ];
 export const sizes = ["5 x 7 cm","10 x 15 cm","13 x 18 cm","15 x 20 cm","20 x 25 cm","20 x 30 cm"];
 export function guidedQuote({product,size,quantity,branch}) {
