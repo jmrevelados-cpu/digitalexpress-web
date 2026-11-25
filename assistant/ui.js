@@ -101,8 +101,9 @@ async function respondTo(text) {
   }
 }
 function openAssistant() {
-  if (!panel.open) panel.showModal();
+  if (!panel.open) panel.show();
   launcher.setAttribute("aria-expanded","true");
+  launcher.hidden = true;
   if (!messages.length) append("assistant","¡Hola! Soy el asistente virtual de DIGITAL EXPRESS. Te ayudo con medidas y solicitudes de cotización. " + (tariffIsCurrent(knowledge.tariff) ? "Puedo calcular un estimado con el tarifario aprobado." : "Nuestro tarifario está en preparación; un asesor humano confirmará los importes."));
   document.querySelector("#assistant-privacy").textContent = knowledge.apiEndpoint ?
     "Tus consultas pueden ser procesadas por IA. No compartas datos de pago. El resumen se envía a tu sede solo cuando tú abres WhatsApp y lo envías." :
@@ -113,6 +114,7 @@ launcher.addEventListener("click",openAssistant);
 document.querySelector("#assistant-close").addEventListener("click",()=>panel.close());
 panel.addEventListener("close",()=>{
   launcher.setAttribute("aria-expanded","false");
+  launcher.hidden = false;
   launcher.focus();
 });
 document.querySelector("#assistant-human").addEventListener("click",human);
