@@ -41,7 +41,7 @@ export function parseRequest(message, state = {}) {
   else if (/calidad|resoluc|pixel|celular|archivo|recort|encuadre/.test(text)) intent = "quality";
   else if (/entrega|envio|recoj|recog|demora|horario|urgente|hoy|manana/.test(text)) intent = "delivery";
   else if (/pago|yape|plin|tarjeta|deposit|transferen/.test(text)) intent = "payment";
-  else if (/sede|direccion|ubicac|chacarilla|monte grande|chorrillos/.test(text)) intent = "branches";
+  else if (/sede|direccion|ubicac|primavera|chacarilla|monte grande|chorrillos/.test(text)) intent = "branches";
   else if (/^(hola|buenas|buenos dias|buenas tardes|buenas noches|gracias)[!. ]*$/.test(text)) intent = "greeting";
   else if ((size || quantity !== null || /\bmate\b|\bbrillante\b/.test(text)) && state.intent === "quote") intent = "quote";
   return {intent, product, size, quantity, finish:/\bmate\b/.test(text)?"Mate":/\bbrill/.test(text)?"Brillante":null};
@@ -119,7 +119,7 @@ export function reply(message, previous = {}, knowledge, now = new Date(), class
   if (extracted.intent === "quality") return result("Comparte el archivo original cuando sea posible y evita capturas de pantalla. El encuadre puede cambiar al adaptar la imagen a otro formato. Un asesor puede revisar el archivo y acordar el recorte antes de imprimir.",true);
   if (extracted.intent === "delivery") return result("Los horarios, plazos, disponibilidad y costo de envío deben confirmarse con tu sede. Dime qué producto necesitas y para qué fecha; puedes incluirlo en el mensaje al asesor.",true);
   if (extracted.intent === "payment") return result("El asesor de tu sede confirmará los medios de pago y las condiciones del pedido. No necesitas compartir datos de tarjeta aquí.",true);
-  if (extracted.intent === "branches") return result("Puedes elegir Chacarilla, Monte Grande o Chorrillos en el selector y contactar a un asesor humano por el WhatsApp oficial de esa sede.",true);
+  if (extracted.intent === "branches") return result("Puedes elegir PRIMAVERA, Monte Grande o Chorrillos en el selector y contactar a un asesor humano por el WhatsApp oficial de esa sede.",true);
   if (extracted.intent === "greeting") return result("¡Hola! Soy el asistente virtual de DIGITAL EXPRESS. Puedo orientarte sobre medidas, preparar tu solicitud de cotización o ayudarte a hablar con una persona. ¿Qué necesitas?");
   if (previous.waitingFor === "product" && extracted.product) {
     return reply("Cotizar " + extracted.product, {...state,intent:"quote"}, knowledge, now);
