@@ -1,0 +1,34 @@
+name: Validación DIGITAL EXPRESS
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Obtener código
+        uses: actions/checkout@v4
+      - name: Preparar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Probar cotizador y Chispa
+        run: node --test assistant/core.test.mjs assistant/guided.test.mjs
+      - name: Generar versión web estática
+        run: node scripts/build-pages.mjs
+      - name: Verificar archivos necesarios
+        run: |
+          test -s dist/index.html
+          test -s dist/assistant/core.mjs
+          test -s dist/assistant/guided.mjs
+          test -s dist/assistant/guided-ui.mjs
+          test -s dist/assistant/knowledge.mjs
