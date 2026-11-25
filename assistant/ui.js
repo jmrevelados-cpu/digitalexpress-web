@@ -1,3 +1,4 @@
+import {mountGuidedAssistant} from "./guided-ui.mjs";
 import knowledge from "./knowledge.mjs";
 import {reply, parseRequest, handoffUrl, tariffIsCurrent} from "./core.mjs";
 
@@ -145,3 +146,5 @@ document.querySelector("#assistant-shortcuts").addEventListener("click",event=>{
 });
 handoffLink.addEventListener("click",()=>{status.textContent="Se abrirá WhatsApp. Revisa el mensaje y pulsa Enviar allí para contactar a tu sede.";});
 launcher.hidden=false;
+
+mountGuidedAssistant({panel,branch,launcher});
