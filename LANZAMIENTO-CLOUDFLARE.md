@@ -25,7 +25,7 @@ El asistente sigue en modo guiado: `apiEndpoint` vacío. No activar IA ni incorp
 3. Verificar que NO existen `dist/assistant/server.mjs`, `dist/assistant/core.test.mjs`, `dist/tarifario/fuente-precios-2026-10-15.jpg` ni Excel.
 4. Comprobar visualmente el logotipo original, nueve categorías y las imágenes en móvil.
 5. Probar el cotizador, casos sin tarifa y derivación humana.
-6. Verificar los WhatsApp: Chacarilla 51968241599, Monte Grande 51968229804 y Chorrillos 51962292116.
+6. Verificar los WhatsApp: PRIMAVERA 51968241599, Monte Grande 51968229804 y Chorrillos 51962292116.
 7. Comprobar que no se activan promociones Jumbo no confirmadas.
 8. Revisar la dirección `*.pages.dev` y aprobar expresamente el lanzamiento.
 
