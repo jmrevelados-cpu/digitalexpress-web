@@ -34,3 +34,9 @@ jobs:
           test -s dist/assistant/guided.mjs
           test -s dist/assistant/guided-ui.mjs
           test -s dist/assistant/knowledge.mjs
+      - name: Guardar vista previa para revisión sin publicar
+        uses: actions/upload-artifact@v4
+        with:
+          name: digital-express-vista-previa
+          path: dist/
+          retention-days: 7
