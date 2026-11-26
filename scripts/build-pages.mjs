@@ -7,6 +7,7 @@ const root = resolve(import.meta.dirname, "..");
 const output = join(root, "dist");
 const files = [
   "index.html",
+  "catalogo-preview.html",
   "assistant/ui.css",
   "assistant/ui.js",
   "assistant/guided.mjs",
